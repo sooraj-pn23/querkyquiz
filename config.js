@@ -7,7 +7,7 @@ const CONFIG = {
     // 1. TIMING CONTROL
     TIMER_DURATION_MS: 60 * 1000, // 1 Minute (60 seconds)
     // Must be the EXACT date/time of her birthday midnight. (Replace 2025 date!)
-    TARGET_MIDNIGHT: new Date('October 30, 2025 11:15:00').getTime(), 
+    TARGET_MIDNIGHT: new Date('October 30, 2025 11:40:00').getTime(), 
     
     // 2. ANSWERS: Update these to your specific correct answers. They are case-insensitive.
     ANSWERS: {
