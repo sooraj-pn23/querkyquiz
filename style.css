@@ -1,0 +1,246 @@
+/* --- Global Styling and Structure --- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* A slightly more modern font */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #e0f2f7; /* Light blue-grey background for softness */
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box; /* Include padding in element's total width and height */
+    overflow-x: hidden; /* Prevent horizontal scroll on small devices */
+}
+
+.card-container {
+    width: 100%;
+    max-width: 400px; /* Standard phone width */
+    background: linear-gradient(145deg, #e6e6fa 0%, #d8bfd8 100%); /* Soft lavender gradient */
+    border-radius: 30px; /* Slightly more rounded corners */
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25); /* Deeper shadow for depth */
+    padding: 35px; /* Increased padding */
+    box-sizing: border-box;
+    color: #4b0082; /* Deep lavender/indigo for main text */
+    position: relative; /* For potential future animations/elements */
+    overflow: hidden;
+}
+
+.page {
+    display: none;
+    opacity: 0; /* Start hidden for fade-in effect */
+    transition: opacity 0.6s ease-in-out; /* Smooth transition for pages */
+    padding: 10px; /* Inner padding for page content */
+}
+
+.page[style*="display: block"] { /* When page is visible, make it opaque */
+    opacity: 1;
+}
+
+/* --- Typography and Element Styling --- */
+.page h2 {
+    font-family: 'Georgia', serif; /* Elegant serif for titles */
+    font-size: 2em; /* Slightly larger title */
+    color: #6a5acd; /* Medium Slate Blue - a lovely lavender shade */
+    margin-bottom: 25px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.05); /* Subtle text shadow */
+}
+
+.page p {
+    font-size: 1.1em;
+    line-height: 1.6;
+    color: #4b0082; /* Deep lavender/indigo */
+    margin-bottom: 20px;
+}
+
+.timer-display {
+    font-family: 'monospace', sans-serif; /* Monospace for numbers */
+    font-size: 2.2em; /* Larger timer */
+    font-weight: bold;
+    color: #2e8b57; /* Sea Green - a vibrant, natural green */
+    margin: 25px 0;
+    border: 3px dashed #90ee90; /* Light Green dashed border */
+    padding: 15px;
+    border-radius: 15px;
+    background-color: rgba(255, 255, 255, 0.7); /* Slightly transparent white background */
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.1); /* Inner shadow for depth */
+}
+
+input[type="text"] {
+    width: calc(100% - 24px); /* Account for padding */
+    padding: 14px; /* Increased padding */
+    margin-bottom: 20px;
+    border: 2px solid #98fb98; /* Pale Green border */
+    border-radius: 10px; /* More rounded input fields */
+    font-size: 1.1em;
+    color: #4b0082;
+    background-color: #f0fff0; /* Honeydew background for input */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+input[type="text"]:focus {
+    border-color: #6a5acd; /* Focus color to lavender */
+    box-shadow: 0 0 8px rgba(106, 90, 205, 0.4); /* Lavender glow on focus */
+    outline: none;
+}
+
+/* --- Button Styling --- */
+button {
+    background-color: #6a5acd; /* Medium Slate Blue (lavender) */
+    color: white;
+    padding: 15px 30px; /* Larger buttons */
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    letter-spacing: 0.5px; /* Slightly spaced letters */
+}
+button:hover:not(:disabled) {
+    background-color: #483d8b; /* Darker lavender on hover */
+    transform: translateY(-2px); /* Slight lift effect */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+button:disabled {
+    background-color: #c8c8c8; /* Greyed out for disabled */
+    cursor: not-allowed;
+    box-shadow: none;
+}
+.message-box {
+    color: #dc143c; /* Crimson for error messages */
+    font-weight: bold;
+    margin-top: 15px;
+    min-height: 25px; /* Increased min-height */
+    font-size: 0.95em;
+}
+
+/* --- Final Page Styling --- */
+#final-page {
+    background: linear-gradient(135deg, #f0fff0 0%, #ffffff 100%); /* Light green-white gradient */
+    border-radius: 25px;
+    padding: 40px; /* More padding */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+#final-page h1 {
+    font-family: 'Dancing Script', cursive; /* A beautiful script font if available, otherwise defaults */
+    font-size: 3.5em; /* Even larger "Happy Birthday" */
+    color: #2e8b57; /* Sea Green for the main celebration text */
+    margin-bottom: 25px;
+    animation: pulse 1.2s infinite alternate ease-in-out;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+}
+@keyframes pulse {
+    from { transform: scale(1); opacity: 0.8; }
+    to { transform: scale(1.08); opacity: 1; }
+}
+#final-page p {
+    color: #4b0082; /* Deep lavender for text */
+    font-size: 1.1em;
+}
+#final-page img {
+    max-width: 90%; /* Slightly smaller for better fit */
+    border-radius: 20px; /* More rounded image */
+    margin: 25px 0;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    border: 3px solid #98fb98; /* Pale Green border around image */
+}
+
+/* Spotify/YouTube Embed iframe styling */
+#final-page iframe {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border: 1px solid #dcdcdc !important; /* Lighter border for iframe */
+}
+
+/* --- Responsive Adjustments (for very small screens) --- */
+@media (max-width: 350px) {
+    .card-container {
+        padding: 20px;
+        border-radius: 20px;
+    }
+    .page h2 {
+        font-size: 1.6em;
+    }
+    .timer-display {
+        font-size: 1.8em;
+        padding: 10px;
+    }
+    button {
+        padding: 12px 20px;
+        font-size: 1em;
+    }
+    #final-page h1 {
+        font-size: 2.5em;
+    }
+}
+
+/* --- Custom Modal Styling (Lavender & Green) --- */
+
+/* The full-screen overlay that blacks out the background */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Dark semi-transparent backdrop */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it's on top of everything */
+    opacity: 0; /* Start hidden */
+    visibility: hidden; /* Start hidden */
+    transition: opacity 0.3s ease;
+}
+
+/* Class to show the modal */
+.modal-overlay.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* The actual box containing the text */
+.modal-content-box {
+    background: linear-gradient(135deg, #f0fff0 0%, #ffffff 100%); /* Light green/white background */
+    color: #4b0082; /* Deep lavender text */
+    padding: 30px;
+    border-radius: 20px;
+    max-width: 85%;
+    width: 350px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    transform: scale(0.9);
+    transition: transform 0.3s ease-in-out;
+}
+
+.modal-overlay.visible .modal-content-box {
+    transform: scale(1);
+}
+
+#modal-title {
+    font-size: 1.5em;
+    color: #2e8b57; /* Sea Green title */
+    margin-bottom: 10px;
+}
+
+#modal-message {
+    font-size: 1.1em;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+.modal-button {
+    /* Reusing the main button style, but making it a little simpler */
+    background-color: #6a5acd; /* Medium Slate Blue (lavender) */
+    color: white;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 30px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.modal-button:hover {
+    background-color: #483d8b; /* Darker lavender on hover */
+}

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Sneaky Birthday Surprise!</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="card-container">
+        <div id="page-1" class="page" data-page="1">
+            <h2></h2> 
+            <p></p>
+            <input type="text" data-input="1" placeholder="Type your choice">
+            <button onclick="checkAnswer(1)">Continue</button>
+            <div data-message="1" class="message-box"></div>
+        </div>
+
+        <div id="page-2" class="page" data-page="2">
+            <h2></h2>
+            <p><strong>Time until unlock:</strong></p>
+            <div data-timer="2" class="timer-display">LOCKED</div>
+            <p></p>
+            <input type="text" data-input="2" placeholder="Your specific answer here">
+            <button onclick="checkAnswer(2)">Submit Answer</button>
+            <div data-message="2" class="message-box"></div>
+        </div>
+
+        <div id="page-3" class="page" data-page="3">
+            <h2></h2>
+            <p><strong>Time until unlock:</strong></p>
+            <div data-timer="3" class="timer-display">LOCKED</div>
+            <p></p>
+            <input type="text" data-input="3" placeholder="Your specific answer here">
+            <button onclick="checkAnswer(3)">Submit Answer</button>
+            <div data-message="3" class="message-box"></div>
+        </div>
+
+        <div id="page-4" class="page" data-page="4">
+            <h2></h2>
+            <p><strong>Time until the big moment:</strong></p>
+            <div data-timer="4" class="timer-display">LOCKED</div>
+            <p></p>
+            <input type="text" data-input="4" placeholder="Type anything you want, it's a riddle!">
+            <button id="submit-4" disabled>The answer is locked until the perfect moment arrives.</button>
+            <div data-message="4" class="message-box">The answer is locked until the perfect moment arrives.</div>
+        </div>
+
+        <div id="final-page" class="page" data-page="5">
+            </div>
+
+    </div>
+
+    <div id="custom-modal-overlay" class="modal-overlay">
+        <div class="modal-content-box">
+            <h3 id="modal-title">Quirky Reply!</h3>
+            <p id="modal-message">The message goes here.</p>
+            <button id="modal-close-button" class="modal-button">Awesome!</button>
+        </div>
+    </div>
+    <script src="config.js"></script>
+</body>
+</html>
