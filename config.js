@@ -456,8 +456,8 @@ function showGiftWrapper(audioEl) {
             if (audioEl) {
                 audioEl.play().catch(err => console.log('Play failed after gift open:', err));
             }
-            // spawn butterflies then start snowfall
-            createButterflies(12);
+            // spawn butterflies and music notes with 1:3 ratio (3 music notes per 1 butterfly)
+            spawnButterflyBurst(4, 12); // 4 butterflies + 12 music notes (4:12 = 1:3 ratio)
             startSnowfall();
         }, 420);
     };
@@ -469,12 +469,14 @@ function showGiftWrapper(audioEl) {
 }
 
 // Create animated butterflies that fly across the final page
-function createButterflies(count) {
+function spawnButterflyBurst(butterflyCount, musicNoteCount) {
     const container = document.getElementById('final-page');
     if (!container) return;
 
     const rect = container.getBoundingClientRect();
-    for (let i = 0; i < count; i++) {
+
+    // Spawn butterflies
+    for (let i = 0; i < butterflyCount; i++) {
         const b = document.createElement('div');
         b.className = 'butterfly';
         b.textContent = '🦋';
@@ -515,6 +517,49 @@ function createButterflies(count) {
         });
 
         anim.onfinish = () => b.remove();
+    }
+
+    // Spawn music notes
+    for (let i = 0; i < musicNoteCount; i++) {
+        const note = document.createElement('div');
+        note.textContent = '♪';
+        note.style.position = 'absolute';
+        
+        const startX = rect.width * 0.5 + (Math.random() - 0.5) * 100;
+        const startY = rect.height * 0.6 + (Math.random() - 0.5) * 50;
+        
+        note.style.left = `${startX}px`;
+        note.style.top = `${startY}px`;
+        note.style.opacity = '0';
+        note.style.fontSize = '28px';
+        note.style.fontWeight = 'bold';
+        note.style.color = '#ff69b4';
+        note.style.pointerEvents = 'none';
+        note.style.willChange = 'transform, opacity';
+        container.appendChild(note);
+
+        // Randomize end position and animation
+        const endX = Math.random() * rect.width;
+        const endY = Math.random() * rect.height * 0.2;
+        const duration = 2200 + Math.random() * 2000;
+        const delay = Math.random() * 300;
+        const rotation = Math.random() * 180;
+
+        const keyframes = [
+            { transform: `translate(0px, 0px) rotate(0deg) scale(1)`, opacity: 0 },
+            { transform: `translate(${(endX - startX) * 0.5}px, ${(endY - startY) * 0.5}px) rotate(${rotation * 0.5}deg) scale(1.1)`, opacity: 1 },
+            { transform: `translate(${endX - startX}px, ${endY - startY}px) rotate(${rotation}deg) scale(0.5)`, opacity: 0 }
+        ];
+
+        const anim = note.animate(keyframes, {
+            duration: duration,
+            easing: 'cubic-bezier(.32,.7,.15,1)',
+            delay: delay,
+            iterations: 1,
+            fill: 'forwards'
+        });
+
+        anim.onfinish = () => note.remove();
     }
 }
 
