@@ -46,7 +46,7 @@ const CONFIG = {
     SONG_EMBED: 'song.mp3', 
     FINAL_IMAGE_URL: 'bdaypic2.jpg', 
     CRUSH_NAME: 'Her Name', 
-    CLOSING_MESSAGE: ' wish u a happiest \n Happy Birthday, priya . I\'m so glad you\'re in my life .'
+    CLOSING_MESSAGE: ' Wish u a happiest \n Birthday  priya . I\'m so glad you\'re in my life 🍷',
 };
 // =========================================================================
 
@@ -240,7 +240,7 @@ function showFinalPage() {
     finalPage.style.display = 'block';
 
     finalPage.innerHTML = `
-        <h1 id="final-title" style="display:none;">🎉 HAPPY BDAY! 🎉</h1>
+        <h1 id="final-title" style="display:none; color: #6b8e23;">🎵 HAPPY BDAY 🎵</h1>
         <div id="gift-container" style="position: relative; display:flex; justify-content:center; align-items:center; width:100%; min-height:40vh;">
             <img id="final-image" src="${CONFIG.FINAL_IMAGE_URL}" alt="A personalized birthday image" style="border-radius:8px; display:none; opacity:0; width:auto; height:auto;">
             <!-- Gift wrapper overlay (covers the image) -->
@@ -250,7 +250,7 @@ function showFinalPage() {
                         <div style="width:100%; height:18%; background: linear-gradient(90deg,#d4af37,#c68b1f); transform:skewY(-3deg);"></div>
                         <div style="position:absolute; width:18%; height:100%; left:41%; background: linear-gradient(180deg,#d4af37,#c68b1f);"></div>
                     </div>
-                    <button id="gift-play-button" aria-label="Open gift" style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); z-index:4; background:transparent; border:none; font-size:18px; color:#5b4636; cursor:pointer; padding:8px 14px;">Open Gift</button>
+                    <button id="gift-play-button" aria-label="Open gift" style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); z-index:4; background:transparent; border:none; font-size:52.92px; color:#5b4636; cursor:pointer; padding:8px 14px;">🌹</button>
                 </div>
             </div>
         </div>
@@ -298,6 +298,100 @@ function showFinalPage() {
 
     // If we are currently handling a user gesture, try playing right away.
     tryPlay();
+
+    // Add click handler to spawn butterflies or music notes randomly at cursor position
+    finalPage.addEventListener('click', (e) => {
+        // Spawn 5 elements (butterflies or music notes randomly) at the click position
+        for (let i = 0; i < 5; i++) {
+            setTimeout(() => {
+                // Randomly choose between butterfly (0) or music note (1)
+                const isButterfly = Math.random() > 0.5;
+                if (isButterfly) {
+                    spawnButterflyAtClick(e, finalPage);
+                } else {
+                    spawnMusicNoteAtClick(e, finalPage);
+                }
+            }, i * 50);
+        }
+    });
+}
+
+// Spawn a butterfly at the click position
+function spawnButterflyAtClick(event, container) {
+    const rect = container.getBoundingClientRect();
+    const clickX = event.clientX - rect.left;
+    const clickY = event.clientY - rect.top;
+
+    const b = document.createElement('div');
+    b.className = 'butterfly';
+    b.textContent = '🦋';
+
+    b.style.left = `${clickX}px`;
+    b.style.top = `${clickY}px`;
+    b.style.opacity = '1';
+    container.appendChild(b);
+
+    // Randomize end position and animation
+    const endX = clickX + (Math.random() - 0.5) * 200;
+    const endY = clickY - (100 + Math.random() * 150);
+    const duration = 1500 + Math.random() * 1000;
+    const rotation = Math.random() * 360;
+
+    const keyframes = [
+        { transform: `translate(0px, 0px) rotate(0deg)`, opacity: 1 },
+        { transform: `translate(${(endX - clickX) * 0.5}px, ${(endY - clickY) * 0.5}px) rotate(${rotation * 0.5}deg)`, opacity: 1 },
+        { transform: `translate(${endX - clickX}px, ${endY - clickY}px) rotate(${rotation}deg)`, opacity: 0 }
+    ];
+
+    const anim = b.animate(keyframes, {
+        duration: duration,
+        easing: 'cubic-bezier(.32,.7,.15,1)',
+        iterations: 1,
+        fill: 'forwards'
+    });
+
+    anim.onfinish = () => b.remove();
+}
+
+// Spawn a music note at the click position
+function spawnMusicNoteAtClick(event, container) {
+    const rect = container.getBoundingClientRect();
+    const clickX = event.clientX - rect.left;
+    const clickY = event.clientY - rect.top;
+
+    const note = document.createElement('div');
+    note.textContent = '♪';
+    note.style.position = 'absolute';
+    note.style.left = `${clickX}px`;
+    note.style.top = `${clickY}px`;
+    note.style.opacity = '1';
+    note.style.fontSize = '24px';
+    note.style.fontWeight = 'bold';
+    note.style.color = '#ff69b4';
+    note.style.pointerEvents = 'none';
+    note.style.willChange = 'transform, opacity';
+    container.appendChild(note);
+
+    // Randomize end position and animation
+    const endX = clickX + (Math.random() - 0.5) * 180;
+    const endY = clickY - (80 + Math.random() * 120);
+    const duration = 1200 + Math.random() * 800;
+    const rotation = Math.random() * 180;
+
+    const keyframes = [
+        { transform: `translate(0px, 0px) rotate(0deg) scale(1)`, opacity: 1 },
+        { transform: `translate(${(endX - clickX) * 0.5}px, ${(endY - clickY) * 0.5}px) rotate(${rotation * 0.5}deg) scale(1.1)`, opacity: 1 },
+        { transform: `translate(${endX - clickX}px, ${endY - clickY}px) rotate(${rotation}deg) scale(0.5)`, opacity: 0 }
+    ];
+
+    const anim = note.animate(keyframes, {
+        duration: duration,
+        easing: 'cubic-bezier(.32,.7,.15,1)',
+        iterations: 1,
+        fill: 'forwards'
+    });
+
+    anim.onfinish = () => note.remove();
 }
 
 // Show a gift wrapper overlay over the image; clicking unwraps and starts audio

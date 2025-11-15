@@ -123,7 +123,7 @@ button:disabled {
 }
 #final-page h1 {
     font-family: 'Dancing Script', cursive; /* A beautiful script font if available, otherwise defaults */
-    font-size: 3.5em; /* Even larger "Happy Birthday" */
+    font-size: 3.15em; /* Reduced by 10% from 3.5em */
     color: #2e8b57; /* Sea Green for the main celebration text */
     margin-bottom: 25px;
     animation: pulse 1.2s infinite alternate ease-in-out;
@@ -147,7 +147,7 @@ button:disabled {
     margin: 20px auto;
     border-radius: 16px;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
-    border: 3px solid #98fb98;
+    border: none;
     object-fit: cover;
 }
 
