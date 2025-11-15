@@ -59,6 +59,9 @@ let cardState = {
 
 // Tracks whether the user has interacted with the page (click/keyboard).
 let userInteracted = false;
+// Snowfall control
+let snowfallStarted = false;
+let snowfallIntervalId = null;
 // --- CORE LOGIC FUNCTIONS ---
 
 // Function to populate page content from CONFIG (RETAINED)
@@ -239,7 +242,7 @@ function showFinalPage() {
     finalPage.innerHTML = `
         <h1 id="final-title" style="display:none;">🎉 HAPPY BDAY! 🎉</h1>
         <div id="gift-container" style="position: relative; display:flex; justify-content:center; align-items:center; width:100%; min-height:40vh;">
-            <img id="final-image" src="${CONFIG.FINAL_IMAGE_URL}" alt="A personalized birthday image" style="max-width:60%; border-radius:8px; display:none; opacity:0;">
+            <img id="final-image" src="${CONFIG.FINAL_IMAGE_URL}" alt="A personalized birthday image" style="border-radius:8px; display:none; opacity:0; width:auto; height:auto;">
             <!-- Gift wrapper overlay (covers the image) -->
             <div id="gift-wrap" style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:60%; max-width:420px; height: auto; display:flex; align-items:center; justify-content:center;">
                 <div class="gift-box" style="position:relative; width:100%; padding-top:66%; background: #fffaf0; border-radius:12px; box-shadow:0 8px 30px rgba(0,0,0,0.12); display:flex; align-items:center; justify-content:center;">
@@ -325,6 +328,26 @@ function showGiftWrapper(audioEl) {
             const finalImg = document.getElementById('final-image');
             if (finalImg) {
                 finalImg.style.display = 'block';
+
+                // Ensure the image uses its original (natural) dimensions
+                const setOriginalSize = () => {
+                    if (finalImg.naturalWidth && finalImg.naturalHeight) {
+                        finalImg.style.width = finalImg.naturalWidth + 'px';
+                        finalImg.style.height = finalImg.naturalHeight + 'px';
+                        finalImg.style.maxWidth = 'none';
+                        finalImg.style.maxHeight = 'none';
+                        finalImg.style.objectFit = 'none';
+                        finalImg.style.display = 'block';
+                        finalImg.style.margin = '12px auto';
+                    }
+                };
+
+                if (finalImg.complete) {
+                    setOriginalSize();
+                } else {
+                    finalImg.addEventListener('load', setOriginalSize, { once: true });
+                }
+
                 try {
                     finalImg.animate([
                         { opacity: 0, transform: 'scale(0.98)' },
@@ -358,8 +381,9 @@ function showGiftWrapper(audioEl) {
             if (audioEl) {
                 audioEl.play().catch(err => console.log('Play failed after gift open:', err));
             }
-            // spawn butterflies
+            // spawn butterflies then start snowfall
             createButterflies(12);
+            startSnowfall();
         }, 420);
     };
 
@@ -417,6 +441,60 @@ function createButterflies(count) {
 
         anim.onfinish = () => b.remove();
     }
+}
+
+// Start continuous snowfall. Safe to call multiple times; it only starts once.
+function startSnowfall() {
+    if (snowfallStarted) return;
+    snowfallStarted = true;
+
+    const container = document.getElementById('final-page');
+    if (!container) return;
+
+    // spawn an initial quick burst
+    for (let i = 0; i < 6; i++) spawnSnowflake(container);
+
+    // spawn periodically
+    snowfallIntervalId = setInterval(() => {
+        // limit simultaneous snowflakes
+        spawnSnowflake(container);
+    }, 300);
+}
+
+function spawnSnowflake(container) {
+    const rect = container.getBoundingClientRect();
+    const s = document.createElement('div');
+    s.className = 'snowflake';
+    // use a small unicode snowflake for widest support
+    s.textContent = '❄';
+
+    const size = 10 + Math.random() * 18; // px
+    s.style.fontSize = `${size}px`;
+    const startLeft = Math.random() * rect.width;
+    s.style.left = `${startLeft}px`;
+    s.style.top = `-10px`;
+    s.style.opacity = '0';
+    container.appendChild(s);
+
+    const endY = rect.height + 40 + Math.random() * 80;
+    const driftX = (Math.random() - 0.5) * 120;
+    const duration = 3000 + Math.random() * 5000; // 3-8s
+
+    const keyframes = [
+        { transform: `translate(0px, 0px) rotate(0deg)`, opacity: 0 },
+        { transform: `translate(${driftX/2}px, ${endY/2}px) rotate(${(Math.random()-0.5)*60}deg)`, opacity: 0.9 },
+        { transform: `translate(${driftX}px, ${endY}px) rotate(${(Math.random()-0.5)*120}deg)`, opacity: 0 }
+    ];
+
+    const anim = s.animate(keyframes, {
+        duration: duration,
+        easing: 'linear',
+        delay: Math.random() * 400,
+        iterations: 1,
+        fill: 'forwards'
+    });
+
+    anim.onfinish = () => s.remove();
 }
 
 // Initialize the card on load (RETAINED)
