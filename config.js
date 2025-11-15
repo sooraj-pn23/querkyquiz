@@ -238,17 +238,16 @@ function showFinalPage() {
 
     finalPage.innerHTML = `
         <h1 id="final-title" style="display:none;">🎉 HAPPY BDAY! 🎉</h1>
-        <p id="final-sub" style="display:none;">All that patience finally paid off! You made it to midnight.</p>
-        <div id="gift-container" style="position: relative; display:flex; justify-content:center;">
+        <div id="gift-container" style="position: relative; display:flex; justify-content:center; align-items:center; width:100%; min-height:40vh;">
             <img id="final-image" src="${CONFIG.FINAL_IMAGE_URL}" alt="A personalized birthday image" style="max-width:60%; border-radius:8px; display:none; opacity:0;">
             <!-- Gift wrapper overlay (covers the image) -->
-            <div id="gift-wrap" style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width: calc(60%); max-width:420px; height: auto; display:flex; align-items:center; justify-content:center;">
-                <div class="gift-box" style="position:relative; width:100%; padding-top:66%; background: #fff0f6; border-radius:12px; box-shadow:0 8px 30px rgba(0,0,0,0.12); display:flex; align-items:center; justify-content:center;">
+            <div id="gift-wrap" style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:60%; max-width:420px; height: auto; display:flex; align-items:center; justify-content:center;">
+                <div class="gift-box" style="position:relative; width:100%; padding-top:66%; background: #fffaf0; border-radius:12px; box-shadow:0 8px 30px rgba(0,0,0,0.12); display:flex; align-items:center; justify-content:center;">
                     <div class="ribbon" style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center;">
-                        <div style="width:100%; height:18%; background: linear-gradient(90deg,#ff5a9a,#ff9ccf); transform:skewY(-3deg);"></div>
-                        <div style="position:absolute; width:18%; height:100%; left:41%; background: linear-gradient(180deg,#ff5a9a,#ff9ccf);"></div>
+                        <div style="width:100%; height:18%; background: linear-gradient(90deg,#d4af37,#c68b1f); transform:skewY(-3deg);"></div>
+                        <div style="position:absolute; width:18%; height:100%; left:41%; background: linear-gradient(180deg,#d4af37,#c68b1f);"></div>
                     </div>
-                    <button id="gift-play-button" aria-label="Open gift" style="position:relative; z-index:4; background:transparent; border:none; font-size:22px; color:#fff; cursor:pointer;">Open Gift</button>
+                    <button id="gift-play-button" aria-label="Open gift" style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); z-index:4; background:transparent; border:none; font-size:18px; color:#5b4636; cursor:pointer; padding:8px 14px;">Open Gift</button>
                 </div>
             </div>
         </div>

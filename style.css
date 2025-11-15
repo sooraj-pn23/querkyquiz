@@ -16,7 +16,7 @@ body {
 .card-container {
     width: 100%;
     max-width: 400px; /* Standard phone width */
-    background: linear-gradient(145deg, #e6e6fa 0%, #d8bfd8 100%); /* Soft lavender gradient */
+    background: linear-gradient(145deg, #fffaf0 0%, #f0e6d6 100%); /* Neutral cream gradient */
     border-radius: 30px; /* Slightly more rounded corners */
     box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25); /* Deeper shadow for depth */
     padding: 35px; /* Increased padding */
