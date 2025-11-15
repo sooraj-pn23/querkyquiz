@@ -299,21 +299,60 @@ function showFinalPage() {
     // If we are currently handling a user gesture, try playing right away.
     tryPlay();
 
-    // Add click handler to spawn butterflies or music notes randomly at cursor position
+    // Add click handler to spawn jasmine flowers or music notes randomly at cursor position
     finalPage.addEventListener('click', (e) => {
-        // Spawn 5 elements (butterflies or music notes randomly) at the click position
+        // Spawn 5 elements (jasmine flowers or music notes randomly) at the click position
         for (let i = 0; i < 5; i++) {
             setTimeout(() => {
-                // Randomly choose between butterfly (0) or music note (1)
-                const isButterfly = Math.random() > 0.5;
-                if (isButterfly) {
-                    spawnButterflyAtClick(e, finalPage);
+                // Randomly choose between jasmine flower (0) or music note (1)
+                const isJasmine = Math.random() > 0.5;
+                if (isJasmine) {
+                    spawnJasmineAtClick(e, finalPage);
                 } else {
                     spawnMusicNoteAtClick(e, finalPage);
                 }
             }, i * 50);
         }
     });
+}
+
+// Spawn a jasmine flower at the click position
+function spawnJasmineAtClick(event, container) {
+    const rect = container.getBoundingClientRect();
+    const clickX = event.clientX - rect.left;
+    const clickY = event.clientY - rect.top;
+
+    const flower = document.createElement('div');
+    flower.textContent = '🌸';
+    flower.style.position = 'absolute';
+    flower.style.left = `${clickX}px`;
+    flower.style.top = `${clickY}px`;
+    flower.style.opacity = '1';
+    flower.style.fontSize = '28px';
+    flower.style.pointerEvents = 'none';
+    flower.style.willChange = 'transform, opacity';
+    container.appendChild(flower);
+
+    // Randomize end position and animation
+    const endX = clickX + (Math.random() - 0.5) * 200;
+    const endY = clickY - (100 + Math.random() * 150);
+    const duration = 1500 + Math.random() * 1000;
+    const rotation = Math.random() * 360;
+
+    const keyframes = [
+        { transform: `translate(0px, 0px) rotate(0deg) scale(1)`, opacity: 1 },
+        { transform: `translate(${(endX - clickX) * 0.5}px, ${(endY - clickY) * 0.5}px) rotate(${rotation * 0.5}deg) scale(1.1)`, opacity: 1 },
+        { transform: `translate(${endX - clickX}px, ${endY - clickY}px) rotate(${rotation}deg) scale(0.5)`, opacity: 0 }
+    ];
+
+    const anim = flower.animate(keyframes, {
+        duration: duration,
+        easing: 'cubic-bezier(.32,.7,.15,1)',
+        iterations: 1,
+        fill: 'forwards'
+    });
+
+    anim.onfinish = () => flower.remove();
 }
 
 // Spawn a butterfly at the click position
