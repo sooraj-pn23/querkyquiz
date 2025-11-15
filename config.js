@@ -495,8 +495,8 @@ function showGiftWrapper(audioEl) {
             if (audioEl) {
                 audioEl.play().catch(err => console.log('Play failed after gift open:', err));
             }
-            // spawn butterflies and music notes with 1:3 ratio (3 music notes per 1 butterfly)
-            spawnButterflyBurst(4, 12); // 4 butterflies + 12 music notes (4:12 = 1:3 ratio)
+            // spawn butterflies and music notes with 1:6 ratio (6 music notes per 1 butterfly)
+            spawnButterflyBurst(4, 24); // 4 butterflies + 24 music notes (4:24 = 1:6 ratio)
             startSnowfall();
         }, 420);
     };
