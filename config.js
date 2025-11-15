@@ -46,7 +46,7 @@ const CONFIG = {
     SONG_EMBED: 'song.mp3', 
     FINAL_IMAGE_URL: 'bdaypic2.jpg', 
     CRUSH_NAME: 'Her Name', 
-    CLOSING_MESSAGE: ' Wish u a happiest \n Birthday  priya . I\'m so glad you\'re in my life 🍷',
+    CLOSING_MESSAGE: ' Wish u a happiest \n birthday  priya . I\'m so glad you\'re in my life 🍷',
 };
 // =========================================================================
 
