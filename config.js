@@ -7,7 +7,10 @@ const CONFIG = {
     // 1. TIMING CONTROL
     TIMER_DURATION_MS: 60 * 1000, // 1 Minute (60 seconds)
     // Must be the EXACT date/time of her birthday midnight. (Replace 2025 date!)
-    TARGET_MIDNIGHT: new Date('October 30, 2025 11:40:00').getTime(), 
+    // TARGET_MIDNIGHT: new Date('November 16, 2025 11::00').getTime(), 
+    // TARGET_MIDNIGHT: new Date().getTime() + (5 * 60 * 1000),
+        TARGET_MIDNIGHT: new Date().getTime(),
+
     
     // 2. ANSWERS: Update these to your specific correct answers. They are case-insensitive.
     ANSWERS: {
@@ -40,8 +43,8 @@ const CONFIG = {
     },
 
     // 4. FINAL REVEAL CONTENT:
-    SONG_EMBED: 'https://open.spotify.com/embed/track/1', 
-    FINAL_IMAGE_URL: 'https://via.placeholder.com/350x200?text=Your+Personal+Photo+Here', 
+    SONG_EMBED: 'song.mp3', 
+    FINAL_IMAGE_URL: 'bdaypic.jpg', 
     CRUSH_NAME: 'Her Name', 
     CLOSING_MESSAGE: 'I hope you enjoyed the journey. You deserve the best day. Happy Birthday, [Crush\'s Name]. I\'m so glad you\'re in my life.'
 };
@@ -237,19 +240,22 @@ function showFinalPage() {
         <img src="${CONFIG.FINAL_IMAGE_URL}" alt="A personalized birthday image">
         
         <p style="font-style: italic; margin-top: 20px;">Your Song Choice:</p>
-        <iframe 
-            style="border-radius:12px" 
-            src="${CONFIG.SONG_EMBED}" 
-            width="100%" 
-            height="100" 
-            frameBorder="0" 
-            allowfullscreen="" 
-            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
-            loading="lazy">
-        </iframe>
+        <audio id="birthday-audio" style="width: 100%; margin: 20px 0;" controls autoplay muted>
+            <source src="${CONFIG.SONG_EMBED}" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
         
         <p style="margin-top: 20px; font-weight: bold;">${CONFIG.CLOSING_MESSAGE.replace('[Crush\'s Name]', CONFIG.CRUSH_NAME)}</p>
     `;
+    
+    // Unmute and play the audio after a short delay
+    setTimeout(() => {
+        const audio = document.getElementById('birthday-audio');
+        if (audio) {
+            audio.muted = false;
+            audio.play().catch(err => console.log('Audio autoplay failed:', err));
+        }
+    }, 500);
 }
 
 // Initialize the card on load (RETAINED)
