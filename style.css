@@ -138,11 +138,17 @@ button:disabled {
     font-size: 1.1em;
 }
 #final-page img {
-    max-width: 90%; /* Slightly smaller for better fit */
-    border-radius: 20px; /* More rounded image */
-    margin: 25px 0;
+    /* Allow portrait images to be taller while preserving aspect ratio */
+    max-width: 80%;
+    max-height: 60vh;
+    width: auto;
+    height: auto;
+    display: block;
+    margin: 20px auto;
+    border-radius: 16px;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
-    border: 3px solid #98fb98; /* Pale Green border around image */
+    border: 3px solid #98fb98;
+    object-fit: cover;
 }
 
 /* Spotify/YouTube Embed iframe styling */
@@ -171,6 +177,66 @@ button:disabled {
     #final-page h1 {
         font-size: 2.5em;
     }
+}
+
+/* Mobile / small-phone adjustments (up to 480px) */
+@media (max-width: 480px) {
+    .card-container {
+        max-width: 360px;
+        padding: 18px;
+        border-radius: 18px;
+    }
+    .page h2 {
+        font-size: 1.4rem;
+    }
+    .page p {
+        font-size: 1rem;
+    }
+    input[type="text"] {
+        padding: 12px;
+        font-size: 1rem;
+    }
+    button {
+        padding: 12px 18px;
+        font-size: 1rem;
+        border-radius: 28px;
+    }
+    #final-page {
+        padding: 20px;
+    }
+    #final-page h1 {
+        font-size: 2.2rem;
+        margin-bottom: 14px;
+    }
+    #gift-container {
+        min-height: 32vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    /* Force the gift wrapper to a more phone-friendly aspect and size */
+    #gift-wrap {
+        width: 80% !important;
+        max-width: 320px !important;
+        left: 50% !important;
+        top: 50% !important;
+        transform: translate(-50%, -50%) !important;
+    }
+    /* Override inline padding-top for the gift-box on small screens */
+    #gift-wrap .gift-box {
+        padding-top: 80% !important;
+        border-radius: 10px !important;
+    }
+    #final-page img {
+        max-width: 100%;
+        max-height: 50vh;
+        width: auto;
+        height: auto;
+        border-radius: 12px;
+        margin: 12px 0;
+    }
+    .butterfly { font-size: 20px; }
+    .modal-content-box { width: 94%; padding: 18px; }
 }
 
 /* --- Custom Modal Styling (Lavender & Green) --- */
