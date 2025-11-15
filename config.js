@@ -240,7 +240,7 @@ function showFinalPage() {
     finalPage.style.display = 'block';
 
     finalPage.innerHTML = `
-        <h1 id="final-title" style="display:none; color: #6b8e23;">🎵 HAPPY BDAY 🎵</h1>
+        <h1 id="final-title" style="display:none; color: #6b8e23;"> HAPPY BDAY 🎵</h1>
         <div id="gift-container" style="position: relative; display:flex; justify-content:center; align-items:center; width:100%; min-height:40vh;">
             <img id="final-image" src="${CONFIG.FINAL_IMAGE_URL}" alt="A personalized birthday image" style="border-radius:8px; display:none; opacity:0; width:auto; height:auto;">
             <!-- Gift wrapper overlay (covers the image) -->

@@ -123,7 +123,7 @@ button:disabled {
 }
 #final-page h1 {
     font-family: 'Dancing Script', cursive; /* A beautiful script font if available, otherwise defaults */
-    font-size: 3.15em; /* Reduced by 10% from 3.5em */
+    font-size: 1.575em; /* Reduced by 50% from 3.15em */
     font-weight: 700;
     color: #6b8e23; /* Matte green */
     margin-bottom: 25px;
