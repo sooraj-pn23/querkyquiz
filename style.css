@@ -151,6 +151,21 @@ button:disabled {
     object-fit: cover;
 }
 
+/* Responsive rule for the final revealed image:
+   - Respect the image's original size up to the viewport
+   - Prevent overflow on small screens by clamping to viewport width/height
+   - Zoom out by 60% total (scale 0.512) for full visibility */
+#final-image {
+    width: auto;            /* allow original pixel width when available */
+    max-width: calc(51.2vw - 40px); /* 51.2% of viewport width (60% zoom out) */
+    height: auto;           /* preserve aspect ratio */
+    max-height: calc(51.2vh - 120px); /* 51.2% of viewport height (60% zoom out) */
+    display: block;
+    margin: 12px auto;
+    object-fit: contain;    /* ensure the image fits without distortion */
+    transform: scale(0.512); /* 60% scale down for full visibility */
+}
+
 /* Spotify/YouTube Embed iframe styling */
 #final-page iframe {
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);

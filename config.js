@@ -44,9 +44,9 @@ const CONFIG = {
 
     // 4. FINAL REVEAL CONTENT:
     SONG_EMBED: 'song.mp3', 
-    FINAL_IMAGE_URL: 'bdaypic.jpg', 
+    FINAL_IMAGE_URL: 'bdaypic2.jpg', 
     CRUSH_NAME: 'Her Name', 
-    CLOSING_MESSAGE: 'I hope you enjoyed the journey . \n  wish u a happiest \n Happy Birthday, priya . I\'m so glad you\'re in my life .'
+    CLOSING_MESSAGE: ' wish u a happiest \n Happy Birthday, priya . I\'m so glad you\'re in my life .'
 };
 // =========================================================================
 
@@ -328,25 +328,6 @@ function showGiftWrapper(audioEl) {
             const finalImg = document.getElementById('final-image');
             if (finalImg) {
                 finalImg.style.display = 'block';
-
-                // Ensure the image uses its original (natural) dimensions
-                const setOriginalSize = () => {
-                    if (finalImg.naturalWidth && finalImg.naturalHeight) {
-                        finalImg.style.width = finalImg.naturalWidth + 'px';
-                        finalImg.style.height = finalImg.naturalHeight + 'px';
-                        finalImg.style.maxWidth = 'none';
-                        finalImg.style.maxHeight = 'none';
-                        finalImg.style.objectFit = 'none';
-                        finalImg.style.display = 'block';
-                        finalImg.style.margin = '12px auto';
-                    }
-                };
-
-                if (finalImg.complete) {
-                    setOriginalSize();
-                } else {
-                    finalImg.addEventListener('load', setOriginalSize, { once: true });
-                }
 
                 try {
                     finalImg.animate([
