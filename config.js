@@ -46,7 +46,7 @@ const CONFIG = {
     SONG_EMBED: 'song.mp3', 
     FINAL_IMAGE_URL: 'bdaypic.jpg', 
     CRUSH_NAME: 'Her Name', 
-    CLOSING_MESSAGE: 'I hope you enjoyed the journey. You deserve the best day. Happy Birthday, [Crush\'s Name]. I\'m so glad you\'re in my life.'
+    CLOSING_MESSAGE: 'I hope you enjoyed the journey . \n  wish u a happiest \n Happy Birthday, priya . I\'m so glad you\'re in my life .'
 };
 // =========================================================================
 
@@ -57,6 +57,8 @@ let cardState = {
     timerInterval: null
 };
 
+// Tracks whether the user has interacted with the page (click/keyboard).
+let userInteracted = false;
 // --- CORE LOGIC FUNCTIONS ---
 
 // Function to populate page content from CONFIG (RETAINED)
@@ -235,32 +237,195 @@ function showFinalPage() {
     finalPage.style.display = 'block';
 
     finalPage.innerHTML = `
-        <h1>🎉 HAPPY BIRTHDAY! 🎉</h1>
-        <p>All that patience finally paid off! You made it to midnight.</p>
-        <img src="${CONFIG.FINAL_IMAGE_URL}" alt="A personalized birthday image">
-        
-        <p style="font-style: italic; margin-top: 20px;">Your Song Choice:</p>
-        <audio id="birthday-audio" style="width: 100%; margin: 20px 0;" controls autoplay muted>
+        <h1 id="final-title" style="display:none;">🎉 HAPPY BDAY! 🎉</h1>
+        <p id="final-sub" style="display:none;">All that patience finally paid off! You made it to midnight.</p>
+        <div id="gift-container" style="position: relative; display:flex; justify-content:center;">
+            <img id="final-image" src="${CONFIG.FINAL_IMAGE_URL}" alt="A personalized birthday image" style="max-width:60%; border-radius:8px; display:none; opacity:0;">
+            <!-- Gift wrapper overlay (covers the image) -->
+            <div id="gift-wrap" style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width: calc(60%); max-width:420px; height: auto; display:flex; align-items:center; justify-content:center;">
+                <div class="gift-box" style="position:relative; width:100%; padding-top:66%; background: #fff0f6; border-radius:12px; box-shadow:0 8px 30px rgba(0,0,0,0.12); display:flex; align-items:center; justify-content:center;">
+                    <div class="ribbon" style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center;">
+                        <div style="width:100%; height:18%; background: linear-gradient(90deg,#ff5a9a,#ff9ccf); transform:skewY(-3deg);"></div>
+                        <div style="position:absolute; width:18%; height:100%; left:41%; background: linear-gradient(180deg,#ff5a9a,#ff9ccf);"></div>
+                    </div>
+                    <button id="gift-play-button" aria-label="Open gift" style="position:relative; z-index:4; background:transparent; border:none; font-size:22px; color:#fff; cursor:pointer;">Open Gift</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hidden audio element; playback is triggered when gift is opened -->
+        <audio id="birthday-audio" style="display: none;" preload="auto">
             <source src="${CONFIG.SONG_EMBED}" type="audio/mpeg">
             Your browser does not support the audio element.
         </audio>
-        
-        <p style="margin-top: 20px; font-weight: bold;">${CONFIG.CLOSING_MESSAGE.replace('[Crush\'s Name]', CONFIG.CRUSH_NAME)}</p>
+
+        <p id="final-closing" style="display:none; margin-top: 20px; font-weight: bold;">${CONFIG.CLOSING_MESSAGE.replace('[Crush\'s Name]', CONFIG.CRUSH_NAME)}</p>
     `;
-    
-    // Unmute and play the audio after a short delay
-    setTimeout(() => {
+
+    // Inject classic styling for the final page (only once)
+    if (!document.getElementById('classic-style')) {
+        const style = document.createElement('style');
+        style.id = 'classic-style';
+        style.innerHTML = `
+            .final-classic { font-family: Georgia, 'Times New Roman', serif; color: #2b2b2b; background: transparent; padding: 40px; text-align: center; min-height: 60vh; box-shadow: 0 6px 30px rgba(0,0,0,0.12); border-radius: 12px; }
+            .final-classic h1 { font-size: 36px; margin-bottom: 8px; }
+            .final-classic p { font-size: 16px; color: #3b3b3b; }
+            .final-classic img { max-width: 60%; border-radius: 8px; box-shadow: 0 6px 18px rgba(0,0,0,0.12); margin: 18px 0; }
+            .butterfly { position: absolute; pointer-events: none; font-size: 28px; will-change: transform, opacity; transform-origin: center; }
+        `;
+        document.head.appendChild(style);
+    }
+
+    // Apply final-classic to container
+    finalPage.classList.add('final-classic');
+
+    // Try to play immediately. If blocked, show a clear play button so the user can start playback.
+    const tryPlay = () => {
         const audio = document.getElementById('birthday-audio');
-        if (audio) {
-            audio.muted = false;
-            audio.play().catch(err => console.log('Audio autoplay failed:', err));
-        }
-    }, 500);
+        if (!audio) return;
+
+        // If the user has interacted previously, browsers are more likely to allow autoplay.
+        audio.play().then(() => {
+            // played successfully (but still present gift overlay until opened)
+        }).catch(err => {
+            console.log('Autoplay blocked or failed:', err);
+        });
+        // Always present the gift wrapper so user can open it intentionally
+        showGiftWrapper(audio);
+    };
+
+    // If we are currently handling a user gesture, try playing right away.
+    tryPlay();
+}
+
+// Show a gift wrapper overlay over the image; clicking unwraps and starts audio
+function showGiftWrapper(audioEl) {
+    const giftWrap = document.getElementById('gift-wrap');
+    const playBtn = document.getElementById('gift-play-button');
+    const finalPage = document.getElementById('final-page');
+    if (!giftWrap || !playBtn || !finalPage) return;
+
+    // Ensure single attachment
+    if (document.getElementById('gift-opened')) return;
+
+    // Click handler to unwrap
+    const openGift = () => {
+        // animate the gift wrap scaling and fading
+        giftWrap.animate([
+            { transform: 'scale(1)', opacity: 1 },
+            { transform: 'scale(1.04) rotate(-3deg)', opacity: 1, offset: 0.4 },
+            { transform: 'scale(0.2) rotate(25deg)', opacity: 0 }
+        ], { duration: 700, easing: 'ease-out', fill: 'forwards' });
+
+        // Slight delay to let unwrap animation show
+        setTimeout(() => {
+            // remove the gift wrap from DOM
+            if (giftWrap && giftWrap.parentNode) giftWrap.parentNode.removeChild(giftWrap);
+
+            // reveal the hidden image with a subtle fade/scale animation
+            const finalImg = document.getElementById('final-image');
+            if (finalImg) {
+                finalImg.style.display = 'block';
+                try {
+                    finalImg.animate([
+                        { opacity: 0, transform: 'scale(0.98)' },
+                        { opacity: 1, transform: 'scale(1)' }
+                    ], { duration: 420, easing: 'cubic-bezier(.2,.9,.2,1)', fill: 'forwards' });
+                } catch (e) {
+                    finalImg.style.opacity = '1';
+                }
+            }
+
+            // reveal title, subtitle and closing message
+            const titleEl = document.getElementById('final-title');
+            const subEl = document.getElementById('final-sub');
+            const closingEl = document.getElementById('final-closing');
+            [titleEl, subEl, closingEl].forEach((el, idx) => {
+                if (!el) return;
+                el.style.display = 'block';
+                try {
+                    el.animate([
+                        { opacity: 0, transform: 'translateY(6px)' },
+                        { opacity: 1, transform: 'translateY(0)' }
+                    ], { duration: 480, delay: 120 * idx, easing: 'cubic-bezier(.2,.9,.2,1)', fill: 'forwards' });
+                } catch (e) {
+                    el.style.opacity = '1';
+                }
+            });
+
+            // mark opened
+            const marker = document.createElement('div'); marker.id = 'gift-opened'; marker.style.display='none'; finalPage.appendChild(marker);
+            // play audio
+            if (audioEl) {
+                audioEl.play().catch(err => console.log('Play failed after gift open:', err));
+            }
+            // spawn butterflies
+            createButterflies(12);
+        }, 420);
+    };
+
+    // Allow clicking either the overlay or the image to open the gift
+    playBtn.addEventListener('click', openGift, { once: true });
+    const img = document.getElementById('final-image');
+    if (img) img.addEventListener('click', openGift, { once: true });
+}
+
+// Create animated butterflies that fly across the final page
+function createButterflies(count) {
+    const container = document.getElementById('final-page');
+    if (!container) return;
+
+    const rect = container.getBoundingClientRect();
+    for (let i = 0; i < count; i++) {
+        const b = document.createElement('div');
+        b.className = 'butterfly';
+        b.textContent = '🦋';
+
+        // start near the center with small random offset
+        const startX = rect.width * 0.5 + (Math.random() - 0.5) * 80;
+        const startY = rect.height * 0.6 + (Math.random() - 0.5) * 40;
+
+        // end somewhere above and to the sides
+        const endX = Math.random() * rect.width;
+        const endY = Math.random() * rect.height * 0.25;
+
+        b.style.left = `${startX}px`;
+        b.style.top = `${startY}px`;
+        b.style.opacity = '0';
+        container.appendChild(b);
+
+        // randomize animation params
+        const duration = 2500 + Math.random() * 2200;
+        const delay = Math.random() * 300;
+
+        const midX = (startX + endX) / 2 + (Math.random() - 0.5) * 120;
+        const midY = (startY + endY) / 2 - (50 + Math.random() * 120);
+
+        // Use Web Animations API for a smooth path
+        const keyframes = [
+            { transform: `translate(0px, 0px) rotate(${Math.random()*30-15}deg)`, opacity: 0 },
+            { transform: `translate(${midX - startX}px, ${midY - startY}px) rotate(${Math.random()*60-30}deg)`, opacity: 1 },
+            { transform: `translate(${endX - startX}px, ${endY - startY}px) rotate(${Math.random()*60-30}deg)`, opacity: 0 }
+        ];
+
+        const anim = b.animate(keyframes, {
+            duration: duration,
+            easing: 'cubic-bezier(.32,.7,.15,1)',
+            delay: delay,
+            iterations: 1,
+            fill: 'forwards'
+        });
+
+        anim.onfinish = () => b.remove();
+    }
 }
 
 // Initialize the card on load (RETAINED)
 function initializeCard() {
     loadPageContent(); 
+    // Track any user interaction so browsers may allow autoplay later
+    document.addEventListener('click', () => userInteracted = true, { once: false });
+    document.addEventListener('keydown', () => userInteracted = true, { once: false });
     if (Date.now() >= CONFIG.TARGET_MIDNIGHT) {
         showFinalPage();
     } else {
